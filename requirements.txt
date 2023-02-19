@@ -1,0 +1,4 @@
+gdown==4.6.3
+getfilelistpy==1.0.7
+dynaconf==3.1.11
+cryptography==39.0.1
