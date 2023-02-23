@@ -4,7 +4,8 @@ from typing import Generator
 import gdown
 from dynaconf.base import LazySettings
 from getfilelistpy import getfilelist
-
+from pyspark.sql import functions as F
+from pyspark.sql import SparkSession
 from utils.cypher import Cypher
 
 
@@ -110,3 +111,43 @@ def download_public_google_drive_file(
         )
     except Exception as e:
         print(e)
+
+
+def get_cross_sell(cod_id_produto: int):
+    spark = (
+        SparkSession
+            .builder
+            .master('local[*]')
+            .appName('mercafacil_consumer_app_cross_sell')
+            .getOrCreate()
+    )
+
+    cross_sell = (
+        spark
+            .read
+            .format('parquet')
+            .load('datalake/gold/cross_sell/*')
+    )
+
+    return cross_sell.filter(F.col('COD_ID_PRODUTO') == cod_id_produto)
+
+
+def get_up_sell(
+    cod_id_cliente: int
+):
+    spark = (
+        SparkSession
+            .builder
+            .master('local[*]')
+            .appName('mercafacil_consumer_app_up_sell')
+            .getOrCreate()
+    )
+
+    up_sell = (
+        spark
+            .read
+            .format('parquet')
+            .load('datalake/gold/up_sell/*')
+    )
+
+    return up_sell.filter(F.col('COD_ID_CLIENTE') == cod_id_cliente)
