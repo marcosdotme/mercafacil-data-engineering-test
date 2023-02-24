@@ -12,6 +12,40 @@ def transform_dataframe_vendas(
     delimiter: str = ';',
     header: bool = True
 ) -> DataFrame:
+    """Transform 'vendas' DataFrame.
+
+    Arguments
+    ---------
+        spark_session `SparkSession`
+        datalake_path `str`: Path to bronze layer data.
+
+    Keyword Arguments
+    -----------------
+        file_format `str`: File format on bronze layer (default: 'csv')
+        delimiter `str`: Delimiter for file on bronze layer (default: ';')
+        header `bool`: File has headers? (default: True)
+
+    Returns
+    -------
+        `DataFrame`
+
+    Example usage
+    -------------
+    >>> spark = (
+        SparkSession
+            .builder
+            .master('local[*]')
+            .appName('app_name')
+            .getOrCreate()
+    )
+    >>> transform_dataframe_vendas(
+        spark_session=spark,
+        datalake_path='datalake/bronze',
+        file_format='csv',
+        delimiter=';',
+        header=True
+    )
+    """
 
     dataframe = (
         spark_session
@@ -33,6 +67,40 @@ def transform_dataframe_produtos(
     delimiter: str = ';',
     header: bool = True
 ) -> DataFrame:
+    """Transform 'produtos' DataFrame.
+
+    Arguments
+    ---------
+        spark_session `SparkSession`
+        datalake_path `str`: Path to bronze layer data.
+
+    Keyword Arguments
+    -----------------
+        file_format `str`: File format on bronze layer (default: 'csv')
+        delimiter `str`: Delimiter for file on bronze layer (default: ';')
+        header `bool`: File has headers? (default: True)
+
+    Returns
+    -------
+        `DataFrame`
+
+    Example usage
+    -------------
+    >>> spark = (
+        SparkSession
+            .builder
+            .master('local[*]')
+            .appName('app_name')
+            .getOrCreate()
+    )
+    >>> transform_dataframe_produtos(
+        spark_session=spark,
+        datalake_path='datalake/bronze',
+        file_format='csv',
+        delimiter=';',
+        header=True
+    )
+    """
 
     dataframe = (
         spark_session
@@ -54,6 +122,40 @@ def transform_dataframe_categorias_produtos(
     delimiter: str = ';',
     header: bool = True
 ) -> DataFrame:
+    """Transform 'categorias_produtos' DataFrame.
+
+    Arguments
+    ---------
+        spark_session `SparkSession`
+        datalake_path `str`: Path to bronze layer data.
+
+    Keyword Arguments
+    -----------------
+        file_format `str`: File format on bronze layer (default: 'csv')
+        delimiter `str`: Delimiter for file on bronze layer (default: ';')
+        header `bool`: File has headers? (default: True)
+
+    Returns
+    -------
+        `DataFrame`
+
+    Example usage
+    -------------
+    >>> spark = (
+        SparkSession
+            .builder
+            .master('local[*]')
+            .appName('app_name')
+            .getOrCreate()
+    )
+    >>> transform_dataframe_categorias_produtos(
+        spark_session=spark,
+        datalake_path='datalake/bronze',
+        file_format='csv',
+        delimiter=';',
+        header=True
+    )
+    """
 
     dataframe = (
         spark_session
@@ -75,6 +177,40 @@ def transform_dataframe_clientes(
     delimiter: str = ';',
     header: bool = True
 ) -> DataFrame:
+    """Transform 'clientes' DataFrame.
+
+    Arguments
+    ---------
+        spark_session `SparkSession`
+        datalake_path `str`: Path to bronze layer data.
+
+    Keyword Arguments
+    -----------------
+        file_format `str`: File format on bronze layer (default: 'csv')
+        delimiter `str`: Delimiter for file on bronze layer (default: ';')
+        header `bool`: File has headers? (default: True)
+
+    Returns
+    -------
+        `DataFrame`
+
+    Example usage
+    -------------
+    >>> spark = (
+        SparkSession
+            .builder
+            .master('local[*]')
+            .appName('app_name')
+            .getOrCreate()
+    )
+    >>> transform_dataframe_clientes(
+        spark_session=spark,
+        datalake_path='datalake/bronze',
+        file_format='csv',
+        delimiter=';',
+        header=True
+    )
+    """
 
     dataframe = (
         spark_session
@@ -93,7 +229,28 @@ def generate_cross_sell(
     spark_session: SparkSession,
     dataframe_vendas: DataFrame,
     cod_id_produto: int | str
-):
+) -> None:
+    """Generate cross-sell products based on `cod_id_produto`
+    and writes on 'gold' layer.
+
+    Arguments
+    ---------
+        spark_session `SparkSession`
+        dataframe_vendas `DataFrame`: Dataframe with data about 'vendas'.
+        cod_id_produto `int | str`
+
+    Example usage
+    -------------
+    >>> spark = (
+        SparkSession
+            .builder
+            .master('local[*]')
+            .appName('app_name')
+            .getOrCreate()
+    )
+    >>> generate_cross_sell(spark_session=spark, dataframe_vendas=df_vendas, cod_id_produto=123)
+    """
+
     dataframe_vendas.createOrReplaceTempView('df_vendas')
 
     df = spark_session.sql(f"""
@@ -130,7 +287,28 @@ def generate_up_sell(
     spark_session: SparkSession,
     dataframe_vendas: DataFrame,
     cod_id_cliente: int | str
-):
+) -> None:
+    """Generate up-sell products based on `cod_id_cliente`
+    and writes on 'gold' layer.
+
+    Arguments
+    ---------
+        spark_session `SparkSession`
+        dataframe_vendas `DataFrame`: Dataframe with data about 'vendas'.
+        cod_id_cliente `int | str`
+
+    Example usage
+    -------------
+    >>> spark = (
+        SparkSession
+            .builder
+            .master('local[*]')
+            .appName('app_name')
+            .getOrCreate()
+    )
+    >>> generate_up_sell(spark_session=spark, dataframe_vendas=df_vendas, cod_id_cliente=500)
+    """
+
     dataframe_vendas.createOrReplaceTempView('df_vendas')
 
     df = spark_session.sql(f"""

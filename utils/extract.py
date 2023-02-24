@@ -10,22 +10,26 @@ def download_data_from_google_drive_folder(
     fields: str = 'files(name,id)',
     quiet: bool = True
 ) -> None:
-    """[description]
+    """Download data from Google Drive folder to `output_folder`.
 
     Arguments
     ---------
-        api_key `str`: [description]
-        folder_id `str`: [description]
-        output_folder `str`: [description]
+        api_key `str`: Google Drive API key.
+        folder_id `str`: Google Drive folder ID.
+        output_folder `str`: Folder to stores the downloaded data.
 
     Keyword Arguments
     -----------------
-        fields `str`: [description] (default: 'files(name,id)')
-        quiet `bool`: [description] (default: True)
+        fields `str`: Fields to retrieve about the file. (default: 'files(name,id)')
+        quiet `bool`: Show download progress or not. (default: True)
 
     Example usage
     -------------
-    >>> extract_data_from_google_drive_folder()
+    >>> download_data_from_google_drive_folder(
+        api_key='MY_GOOGLE_DRIVE_API_KEY',
+        folder_id='1HnP8MBaLYhFl8Bato1PbaTJ-B35v0_Kp',
+        output_folder='datalake/bronze'
+    )
     """
 
     files = list_files_in_public_google_drive_folder(

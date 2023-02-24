@@ -9,12 +9,39 @@ from utils.exceptions import EnvironmentVariableIsIncorrect
 
 
 class Cypher:
+    """Provides methods to encrypt and decrypted data.
+
+    Attributes
+    ----------
+        cypher_pass: Fernet key used to encrypt and decrypt messages.
+
+    Methods
+    -------
+        encrypt(): Encrypts a message using a Fernet key.
+        decrypt(): Decrypts a encrypted message using a Fernet key.
+
+    Example usage
+    -------------
+    >>> cypher = Cypher()
+    """
     def __init__(self):
         self.cypher_pass = getenv('CYPHER_PASS')
 
-    def encrypt(self, message):
-        """
-        Encrypts an message.
+    def encrypt(self, message: str) -> str:
+        """Encrypts a message using a Fernet key.
+
+        Arguments
+        ---------
+            message `str`: Message to encrypt.
+
+        Returns
+        -------
+            `str`: Returns an encrypted message.
+
+        Example usage
+        -------------
+        >>> encrypt(message='data')
+        >>> 'gAAAAABj8ZD1hKxtOdN3NIdYWD05B4Heo92'
         """
         if not self.cypher_pass:
             error_message = 'Missing environment variable $CYPHER_PASS.'
@@ -53,9 +80,21 @@ class Cypher:
         return encrypted_message.decode()
 
 
-    def decrypt(self, encrypted_message):
-        """
-        Decrypts an encrypted message.
+    def decrypt(self, encrypted_message: str) -> str:
+        """Decrypts a encrypted message using a Fernet key.
+
+        Arguments
+        ---------
+            encrypted_message `str`: Message to decrypt.
+
+        Returns
+        -------
+            `str`: Returns an decrypted message.
+
+        Example usage
+        -------------
+        >>> decrypt(encrypted_message='gAAAAABj8ZD1hKxtOdN3NIdYWD05B4Heo92')
+        >>> 'data'
         """
         if not self.cypher_pass:
             error_message = 'Missing environment variable $CYPHER_PASS.'

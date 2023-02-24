@@ -12,22 +12,28 @@ def upload_files_to_s3_bucket(
     access_key: str = None,
     secret_access_key: str = None
 ) -> None:
-    """[description]
+    """Upload files to AWS S3 bucket.
 
     Arguments
     ---------
-        bucket_name `str`: [description]
-        bucket_folder `str`: [description]
-        files `str | List[str]`: [description]
+        bucket_name `str`: Bucket name.
+        bucket_folder `str`: Folder on S3 bucket to upload file.
+        files `str | List[str]`: Files to upload.
 
     Keyword Arguments
     -----------------
-        access_key `str`: [description] (default: None)
-        secret_access_key `str`: [description] (default: None)
+        access_key `str`: AWS Access Key (default: None)
+        secret_access_key `str`: AWS Secret Access Key (default: None)
 
     Example usage
     -------------
-    >>> upload_files_to_s3_bucket()
+    >>> upload_files_to_s3_bucket(
+        bucket_name='datalake',
+        bucket_folder='bronze',
+        files=['data1.csv', 'data2.csv'],
+        access_key='MY_AWS_ACCESS_KEY',
+        secret_access_key='MY_AWS_SECRET_ACCESS_KEY'
+    )
     """
 
     if isinstance(files, str):
